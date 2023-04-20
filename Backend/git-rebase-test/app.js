@@ -7,7 +7,7 @@ const { DataSource } = require("typeorm");
 
 const app = express();
 const appDataSource = new DataSource({
-  type: process.env.DB_TYPE,
+  type: process.env.DB_CONNECTION,
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
   username: process.env.DB_USERNAME,
@@ -31,6 +31,26 @@ app.get("/ping", (req, res) => {
 feature/signin 브랜치의 경우 app.post('/users/signin', ...)
 feature/signup 브랜치의 경우 app.post('/users/signup', ...)
 */
+
+app.post("/users/signup", async (req, res) => {
+  const { username, email, password } = req.body;
+  return await appDataSource.query(
+    `
+      INSERT INTO
+        users (
+          username,
+          email,
+          password			
+        )
+      VALUES (
+        ?,
+        ?,
+        ?
+      )
+    `,
+    [username, email, password]
+  );
+});
 
 app.listen(PORT, () => {
   appDataSource
