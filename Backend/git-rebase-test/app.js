@@ -45,7 +45,6 @@ app.post("/users/signup", async (req, res) => {
       VALUES (
         ?,
         ?,
-        ?,
         ?
       )
     `,
